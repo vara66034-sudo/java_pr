@@ -1,91 +1,95 @@
 import java.util.Scanner;
-
+import java.util.InputMismatchException;
 public class Fifth {
     static Scanner scanner = new Scanner(System.in);
 
-    static void main() {
-        int choice = -1;
+    public static void main(String[] args) {
+        boolean isRunning = true;
 
-        while (choice != 0) {
-            System.out.println("\nГлавное меню:");
-            System.out.println("1. Вычислить площадь треугольника");
-            System.out.println("2. Информация о программе");
-            System.out.println("3. Информация о разработчике");
-            System.out.println("0. Выход");
+        while (isRunning) {
+            showMenu();
+            int choice = getValidMenuChoice();
 
-            System.out.print("Выберите пункт: ");
-
-            if (scanner.hasNextInt()) {
-                choice = scanner.nextInt();
-            } else {
-                System.out.println("Ошибка: введите номер пункта.");
-                scanner.next();
-                continue;
-            }
-
-            if (choice == 1) {
-                calculate();
-            } else if (choice == 2) {
-                info();
-            } else if (choice == 3) {
-                developer();
-            } else if (choice == 0) {
-                System.out.println("Программа завершена.");
-            } else {
-                System.out.println("Ошибка: такого пункта нет.");
+            switch (choice) {
+                case 1:
+                    calculate();
+                    break;
+                case 2:
+                    showProgramInfo();
+                    break;
+                case 3:
+                    showDeveloperInfo();
+                    break;
+                case 4:
+                    System.out.println("Программа завершена.");
+                    isRunning = false;
+                    break;
             }
         }
+    }
 
-        scanner.close();
+    static void showMenu() {
+        System.out.println("\nГлавное меню:");
+        System.out.println("1. Вычислить площадь треугольника");
+        System.out.println("2. Информация о программе");
+        System.out.println("3. Информация о разработчике");
+        System.out.println("4. Выход");
+        System.out.print("Выберите пункт: ");
+    }
+
+    static int getValidMenuChoice() {
+        while (true) {
+            try {
+                int choice = scanner.nextInt();
+                if (choice >= 1 && choice <= 4) {
+                    return choice;
+                } else {
+                    System.out.print("Введите число от 1 до 4: ");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.print("Ошибка! Введите число от 1 до 4: ");
+                scanner.nextLine();
+            }
+        }
     }
 
     static void calculate() {
-        System.out.println("Расчет площади по формуле Герона.");
-
-        double a;
-        double b;
-        double c;
+        System.out.println("\nРасчет площади по формуле Герона.");
 
         while (true) {
-            System.out.print("Введите сторону a: ");
-            if (!scanner.hasNextDouble()) {
-                System.out.println("Ошибка: введите число.");
-                scanner.next();
-                continue;
-            }
-            a = scanner.nextDouble();
-
-            System.out.print("Введите сторону b: ");
-            if (!scanner.hasNextDouble()) {
-                System.out.println("Ошибка: введите число.");
-                scanner.next();
-                continue;
-            }
-            b = scanner.nextDouble();
-
-            System.out.print("Введите сторону c: ");
-            if (!scanner.hasNextDouble()) {
-                System.out.println("Ошибка: введите число.");
-                scanner.next();
-                continue;
-            }
-            c = scanner.nextDouble();
-
-            if (a <= 0 || b <= 0 || c <= 0) {
-                System.out.println("Ошибка: стороны должны быть больше нуля.");
-                continue;
-            }
+            double a = getValidPositiveDouble("Введите сторону a: ");
+            double b = getValidPositiveDouble("Введите сторону b: ");
+            double c = getValidPositiveDouble("Введите сторону c: ");
 
             if (a + b <= c || a + c <= b || b + c <= a) {
                 System.out.println("Ошибка: такого треугольника не существует.");
+                System.out.println("Повторите ввод сторон.");
                 continue;
             }
 
+            double area = heron(a, b, c);
+            System.out.println("Площадь треугольника: " + area);
             break;
         }
+    }
 
-        double area = heron(a, b, c);
-        System.out.println("Площадь треугольника: " + area);
+    static double getValidPositiveDouble(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                double value = scanner.nextDouble();
+
+                if (Double.isFinite(value) && value > 0) {
+                    return value;
+                } else {
+                    System.out.println("Ошибка! Сторона должна быть положительным числом.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Ошибка! Введите корректное число.");
+                scanner.nextLine();
+            }
+        }
     }
 
     static double heron(double a, double b, double c) {
@@ -94,12 +98,15 @@ public class Fifth {
         return area;
     }
 
-    static void info() {
+    static void showProgramInfo() {
+        System.out.println("\nО программе");
         System.out.println("Программа вычисляет площадь треугольника");
         System.out.println("по трем сторонам с помощью формулы Герона.");
     }
 
-    static void developer() {
+    static void showDeveloperInfo() {
+        System.out.println("\nО разработчике");
         System.out.println("Разработчик: Андреева Варвара");
+        System.out.println("Группа: РИ-250931");
     }
 }
