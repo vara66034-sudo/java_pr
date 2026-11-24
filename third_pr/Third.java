@@ -1,20 +1,22 @@
 import java.util.Scanner;
-
+import java.util.Arrays;
 public class Third {
-    static double[] calculate(double[] a) {
+    public static double[] calculate(double[] a) {
         int n = a.length;
         double[] b = new double[n];
+
         for (int i = 0; i < n; i++) {
             double sum = 0;
+
             for (int j = i; j < n; j++) {
                 sum = sum + a[j];
             }
             b[i] = sum / (n - i);
         }
-        return  b;
+        return b;
     }
 
-    static void main() {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите количество элементов: ");
         int n = scanner.nextInt();
@@ -26,15 +28,12 @@ public class Third {
 
         double[] a = new double[n];
         System.out.println("Введите элементы массива через пробел:");
-
         for (int i = 0; i < n; i++) {
             a[i] = scanner.nextDouble();
         }
 
         double[] b = calculate(a);
-        System.out.println("Массив B:");
-        for (int i = 0; i < n; i++) {
-            System.out.print(b[i] + " ");
-        }
+        System.out.println("Массив A: " + Arrays.toString(a));
+        System.out.println("Массив B: " + Arrays.toString(b));
     }
 }
