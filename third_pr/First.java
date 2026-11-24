@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class First {
-    static void main() {
+    static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите количество элементов: ");
         int n = scanner.nextInt();
@@ -18,7 +18,6 @@ public class First {
 
         int left = 0;
         int right = n - 1;
-
         while (left <= right) {
             for (int i = 0; i < 2 && left <= right; i++) {
                 System.out.print(a[left] + " ");
