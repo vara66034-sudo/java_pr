@@ -1,48 +1,63 @@
 import java.util.Scanner;
-
+import java.util.InputMismatchException;
 public class Fifth {
     static Scanner scanner = new Scanner(System.in);
 
-    static void main() {
-        int choice = -1;
+    public static void main(String[] args) {
+        boolean isRunning = true;
 
-        while (choice != 0) {
-            System.out.println("\nГлавное меню:");
-            System.out.println("1. Вычислить площадь треугольника");
-            System.out.println("2. Информация о программе");
-            System.out.println("3. Информация о разработчике");
-            System.out.println("0. Выход");
-            System.out.print("Выберите пункт: ");
+        while (isRunning) {
+            showMenu();
+            int choice = getValidMenuChoice();
 
-            if (scanner.hasNextInt()) {
-                choice = scanner.nextInt();
-            } else {
-                System.out.println("Ошибка: введите номер пункта.");
-                scanner.next();
-                continue;
-            }
-
-            if (choice == 1) {
-                calculate();
-            } else if (choice == 2) {
-                info();
-            } else if (choice == 3) {
-                developer();
-            } else if (choice == 0) {
-                System.out.println("Программа завершена.");
-            } else {
-                System.out.println("Ошибка: такого пункта нет.");
+            switch (choice) {
+                case 1:
+                    calculate();
+                    break;
+                case 2:
+                    showProgramInfo();
+                    break;
+                case 3:
+                    showDeveloperInfo();
+                    break;
+                case 4:
+                    System.out.println("Программа завершена.");
+                    isRunning = false;
+                    break;
             }
         }
-
         scanner.close();
     }
 
+    static void showMenu() {
+        System.out.println("\nГлавное меню:");
+        System.out.println("1. Вычислить площадь треугольника");
+        System.out.println("2. Информация о программе");
+        System.out.println("3. Информация о разработчике");
+        System.out.println("4. Выход");
+        System.out.print("Выберите пункт: ");
+    }
+
+    static int getValidMenuChoice() {
+        while (true) {
+            try {
+                int choice = scanner.nextInt();
+                if (choice >= 1 && choice <= 4) {
+                    return choice;
+                } else {
+                    System.out.print("Введите число от 1 до 4: ");
+                }
+            } catch (InputMismatchException e) {
+                System.out.print("Ошибка! Введите число от 1 до 4: ");
+                scanner.nextLine();
+            }
+        }
+    }
+
     static void calculate() {
-        System.out.println("Расчет площади по формуле Герона.");
+        System.out.println("\nРасчет площади по формуле Герона.");
         while (true) {
             double[] sides = input();
-
             if (check(sides)) {
                 double area = heron(sides);
                 output(area);
@@ -72,8 +87,9 @@ public class Fifth {
         double b = sides[1];
         double c = sides[2];
 
-        if (a <= 0 || b <= 0 || c <= 0) {
-            System.out.println("Ошибка: стороны должны быть больше нуля.");
+        if (!Double.isFinite(a) || !Double.isFinite(b) || !Double.isFinite(c)
+                || a <= 0 || b <= 0 || c <= 0) {
+            System.out.println("Ошибка: стороны должны быть положительными конечными числами.");
             return false;
         }
 
@@ -97,12 +113,15 @@ public class Fifth {
         System.out.println("Площадь треугольника: " + area);
     }
 
-    static void info() {
+    static void showProgramInfo() {
+        System.out.println("\nО программе");
         System.out.println("Программа вычисляет площадь треугольника");
         System.out.println("по трем сторонам с помощью формулы Герона.");
     }
 
-    static void developer() {
+    static void showDeveloperInfo() {
+        System.out.println("\nО разработчике");
         System.out.println("Разработчик: Андреева Варвара");
+        System.out.println("Группа: РИ-250931");
     }
 }
