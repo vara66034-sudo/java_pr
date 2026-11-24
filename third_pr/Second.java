@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Second {
-    static void main() {
+    static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите количество элементов: ");
         int n = scanner.nextInt();
@@ -18,13 +18,10 @@ public class Second {
 
         int count = 0;
         for (int i = 1; i < n; i++) {
-            if (a[i] > a[i - 1]) {
-                if (i == 1 || a[i - 1] <= a[i - 2]) {
-                    count++;
-                }
+            if (a[i] > a[i - 1] && (i == 1 || a[i - 1] <= a[i - 2])) {
+                count++;
             }
         }
-
         System.out.println("Количество возрастающих участков: " + count);
     }
 }
